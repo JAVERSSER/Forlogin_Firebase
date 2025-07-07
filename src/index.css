@@ -3,12 +3,17 @@
 * {
   box-sizing: border-box;
 }
+
 body {
-  /* background: #1c8ef9 !important; */
   min-height: 100vh;
   display: flex;
   font-weight: 400;
   font-family: "Fira Sans", sans-serif;
+  margin: 0; /* prevent default margin */
+  background: #f7f9fc; /* optional light background */
+  justify-content: center; /* center content horizontally */
+  align-items: center; /* center content vertically */
+  padding: 1rem; /* some padding for small screens */
 }
 
 h1,
@@ -21,6 +26,7 @@ label,
 span {
   font-weight: 500;
   font-family: "Fira Sans", sans-serif;
+  margin: 0; /* reset default margins */
 }
 
 body,
@@ -42,18 +48,22 @@ html,
   justify-content: center;
   flex-direction: column;
   text-align: left;
+  padding: 1rem;
 }
 
 .auth-inner {
   width: 450px;
+  max-width: 100%; /* allow shrinking on smaller screens */
   margin: auto;
   background: #ffffff;
   box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
   padding: 40px 55px 45px 55px;
   border-radius: 15px;
   transition: all 0.3s;
+  box-sizing: border-box;
 }
 
+/* Focus styles */
 .auth-wrapper .form-control:focus {
   border-color: #167bff;
   box-shadow: none;
@@ -61,9 +71,8 @@ html,
 
 .auth-wrapper h3 {
   text-align: center;
-  margin: 0;
+  margin: 0 0 20px 0;
   line-height: 1;
-  padding-bottom: 20px;
 }
 
 .custom-control-label {
@@ -82,10 +91,39 @@ html,
 .forgot-password a {
   color: #167bff;
 }
-.continue-p{
+
+.continue-p {
   font-size: 12px;
-    color: #b2b2b2;
-    font-weight: 600;
-    margin-top: 1rem;
-    text-align: center;
+  color: #b2b2b2;
+  font-weight: 600;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Responsive tweaks for smaller devices */
+@media (max-width: 600px) {
+  body {
+    padding: 0.5rem;
+  }
+
+  .auth-inner {
+    width: 100%;
+    padding: 20px 25px 25px 25px;
+    border-radius: 10px;
+  }
+
+  .auth-wrapper h3 {
+    font-size: 1.5rem;
+    padding-bottom: 15px;
+  }
+
+  .forgot-password,
+  .forgot-password a {
+    font-size: 12px;
+    padding-top: 8px;
+  }
+
+  .continue-p {
+    font-size: 11px;
+  }
 }
