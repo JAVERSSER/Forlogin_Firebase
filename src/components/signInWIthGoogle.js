@@ -9,6 +9,9 @@ function SignInwithGoogle() {
   const googleLogin = () => {
     const provider = new GoogleAuthProvider();
 
+    // Force account chooser popup every time
+    provider.setCustomParameters({ prompt: "select_account" });
+
     signInWithPopup(auth, provider)
       .then(async (result) => {
         const user = result.user;
