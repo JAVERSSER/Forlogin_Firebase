@@ -3,36 +3,52 @@ import React, { useState } from "react";
 import { auth, db } from "./firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-function Register() {
+function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      const user = auth.currentUser;
-      console.log(user);
-      if (user) {
-        await setDoc(doc(db, "Users", user.uid), {
-          email: user.email,
-          firstName: fname,
-          lastName: lname,
-          photo:""
-        });
-      }
-      console.log("User Registered Successfully!!");
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "Users", user.uid), {
+        email: user.email,
+        firstName: fname,
+        lastName: lname,
+        photo: "",
+      });
+
       toast.success("User Registered Successfully!!", {
         position: "top-center",
       });
+
+      navigate("/login", { replace: true });
     } catch (error) {
-      console.log(error.message);
-      toast.error(error.message, {
-        position: "bottom-center",
-      });
+      console.log("Registration error:", error.message);
+
+      if (error.code === "auth/email-already-in-use") {
+        toast.error(
+          "This email is already registered. Please log in instead.",
+          {
+            position: "top-center",
+          }
+        );
+      } else {
+        toast.error(error.message, {
+          position: "bottom-center",
+        });
+      }
     }
   };
 
@@ -83,15 +99,17 @@ function Register() {
         />
       </div>
 
-      <div className="d-grid">
-        <button type="submit" className="btn btn-primary">
-          Sign Up
-        </button>
-      </div>
+        <div className="d-grid">
+          <button type="submit" className="btn btn-primary">
+            Sign Up
+          </button>
+        </div>
+
       <p className="forgot-password text-right">
-        Already registered <a href="/login">Login</a>
+        Already registered? <a href="/login">Login</a>
       </p>
     </form>
   );
 }
-export default Register;
+
+export default SignUp;
